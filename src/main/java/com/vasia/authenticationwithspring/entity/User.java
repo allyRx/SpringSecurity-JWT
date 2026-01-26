@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 
     @Override
@@ -51,6 +51,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }
