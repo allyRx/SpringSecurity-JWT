@@ -1,57 +1,52 @@
 package com.vasia.authenticationwithspring.entity;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import org.jspecify.annotations.Nullable;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+@Entity
+@Data
+@AllArgsConstructor @NoArgsConstructor
+@Table(name = "users")
 public class User implements UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
+    private String fullName;
+    @Column(unique = true , nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
-    private boolean enabled=false;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private Date createdAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private Date updateAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
-    }
-
-    @Override
-    public @Nullable String getPassword() {
-        return "";
+        return List.of();
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+        return UserDetails.super.isAccountNonExpired();
     }
 
     @Override
