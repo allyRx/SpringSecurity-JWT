@@ -75,10 +75,10 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
     public String generateToken(Map<String, Object> claims, UserDetails userDetails){
-        return buildToken(claims, userDetails, String.valueOf(expirationJwt));
+        return buildToken(claims, userDetails, expirationJwt);
     }
 
-    private String buildToken(Map<String, Object> claims, UserDetails userDetails, String expirationJwt) {
+    private String buildToken(Map<String, Object> claims, UserDetails userDetails, long expirationJwt) {
         return  Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
