@@ -31,6 +31,7 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers( "/auth/signup","/auth/login").permitAll()
                                 .requestMatchers("/swagger-ui/**","/v3/api-docs/**","/swagger-ui.html").permitAll()
+                                .requestMatchers("/auth/refresh").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->

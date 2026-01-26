@@ -154,8 +154,12 @@ http://localhost:8080/api
 **Response (200 OK)**:
 ```json
 {
+{
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken":"dfdkflkdlfkdl.....",
   "expiresIn": 86400000
+}
+
 }
 ```
 
@@ -184,6 +188,33 @@ Authorization: Bearer <JWT_TOKEN>
   }
 ]
 ```
+
+#### 4. Refresh token
+- **Method**: `POST`
+- **Endpoint**: `/auth/refresh`
+
+**Request Body**:
+```json
+{
+  "refreshToken": "refresh token"
+}
+```
+
+**Response (200 OK)**:
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken":"dfdkflkdlfkdl.....",
+  "expiresIn": 86400000
+}
+```
+
+
+#### 5. Logout
+- **Method**: `POST`
+- **Endpoint**: `/auth/logout`
+```
+
 
 ---
 
