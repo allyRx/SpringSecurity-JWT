@@ -1,4 +1,3 @@
 package com.vasia.authenticationwithspring.dtos;
 
-public class RefreshRequest {
-}
+public record RefreshRequest(String refreshToken) {}
