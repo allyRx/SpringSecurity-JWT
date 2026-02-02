@@ -5,12 +5,12 @@ import com.vasia.authenticationwithspring.entity.RefreshToken;
 import com.vasia.authenticationwithspring.entity.User;
 import com.vasia.authenticationwithspring.repository.RefreshTokenRepository;
 import com.vasia.authenticationwithspring.repository.UserRepository;
-import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,19 +27,23 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RefreshToken create(Long userId){
+    public RefreshToken create(Long userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(()->new RuntimeException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        refreshTokenRepository.deleteByUser(user);
+        // chercher le refresh token existant par user
+        Optional<RefreshToken> existingToken = refreshTokenRepository.findByUser(user);
 
-        RefreshToken newRefreshToken = new RefreshToken();
-        newRefreshToken.setUser(user);
-        newRefreshToken.setToken(UUID.randomUUID().toString());
-        newRefreshToken.setExpiryDate(Instant.now().plusMillis(refreshExpiration));
+        RefreshToken refreshToken = existingToken.orElse(new RefreshToken());
 
-        return refreshTokenRepository.save(newRefreshToken);
+        refreshToken.setUser(user);
+        refreshToken.setToken(UUID.randomUUID().toString());
+        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshExpiration));
+
+        return refreshTokenRepository.save(refreshToken);
     }
+
 
     public RefreshToken verify(String token) {
 
