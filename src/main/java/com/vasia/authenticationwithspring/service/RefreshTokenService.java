@@ -5,7 +5,6 @@ import com.vasia.authenticationwithspring.entity.RefreshToken;
 import com.vasia.authenticationwithspring.entity.User;
 import com.vasia.authenticationwithspring.repository.RefreshTokenRepository;
 import com.vasia.authenticationwithspring.repository.UserRepository;
-import jakarta.persistence.Id;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
